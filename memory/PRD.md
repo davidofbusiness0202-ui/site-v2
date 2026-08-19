@@ -23,7 +23,16 @@ Site de rifa online para divulgação via Meta Ads. Tema preto e amarelo, estilo
 - Mapa do Google com a loja física
 - Botões Instagram (instagram.com/mqcell06) e WhatsApp (wa.me/message/Y75R6GYC573RK1) sem exibir URLs
 
-## Implementado (19/08/2026)
+## Implementado (19/08/2026 — fase 2)
+- Painel Admin em /admin com senha (JWT 24h): estatísticas (vendidos, pendentes, pagos, arrecadado), lista de pedidos com "Marcar pago" e "Liberar reserva", definição dos 4 números ganhadores (1 por prêmio, só visível no admin, mostra quem comprou o número)
+- Ícone de pessoa ao lado do botão Participar leva ao login do admin
+- Logo oficial MQ (extraída da arte enviada) no navbar, footer e painel
+- Checkout em 2 passos: QR Code Pix gerado no backend (BR Code/EMV com CRC16) já com o valor exato + botão "Pix copia e cola" + chave CNPJ 65.836.767/0001-09
+- Automação WhatsApp: botão "Confirmar no WhatsApp" abre wa.me/556295389068 com mensagem automática (nome, números, total, chave Pix)
+- Consulta de números: pedidos "aguardando pagamento" ganham botão "Pagar agora" que abre o checkout com QR
+- Textos ajustados: 4 números sorteados, 1 prêmio por número (removida ideia de "kit completo")
+
+## Implementado (19/08/2026 — fase 1)
 - Hero cinético com reveal linha a linha, contagem regressiva 30 dias, parallax
 - Marquee editorial amarelo (compra segura, Pix, etc.)
 - Vitrine bento dos 4 prêmios com fotos oficiais (mapping corrigido após verificação)

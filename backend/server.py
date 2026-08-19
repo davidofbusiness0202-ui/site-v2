@@ -1,15 +1,19 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Query
+from fastapi import FastAPI, APIRouter, HTTPException, Query, Request
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import re
+import io
+import base64
 import uuid
 import logging
 from pathlib import Path
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 from datetime import datetime, timezone, timedelta
+import jwt
+import qrcode
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -23,12 +27,66 @@ api_router = APIRouter(prefix="/api")
 
 TOTAL_NUMBERS = 500
 PRICE_PER_NUMBER = 5.0
+JWT_ALGORITHM = "HS256"
+
+PIX_CNPJ = "65836767000109"
+
+PRIZES = [
+    "Smart Watch X10 Ultra 3",
+    "Apple AirPods Pro 3ª Geração",
+    "Carregador Turbo 120W Samsung",
+    "Caixa de Som Bluetooth",
+]
+
+
+def _emv(field_id: str, value: str) -> str:
+    return f"{field_id}{len(value):02d}{value}"
+
+
+def _crc16(payload: str) -> str:
+    crc = 0xFFFF
+    for ch in payload:
+        crc ^= ord(ch) << 8
+        for _ in range(8):
+            if crc & 0x8000:
+                crc = ((crc << 1) ^ 0x1021) & 0xFFFF
+            else:
+                crc = (crc << 1) & 0xFFFF
+    return format(crc, "04X")
 
 
 class OrderCreate(BaseModel):
     name: str = Field(min_length=2, max_length=80)
     phone: str = Field(min_length=8, max_length=20)
     numbers: List[int] = Field(min_length=1, max_length=100)
+
+
+class AdminLogin(BaseModel):
+    password: str
+
+
+class WinnersUpdate(BaseModel):
+    winners: List[Optional[int]] = Field(min_length=4, max_length=4)
+
+
+def create_admin_token() -> str:
+    payload = {
+        "sub": "admin",
+        "type": "admin",
+        "exp": datetime.now(timezone.utc) + timedelta(hours=24),
+    }
+    return jwt.encode(payload, os.environ["JWT_SECRET"], algorithm=JWT_ALGORITHM)
+
+
+def require_admin(request: Request):
+    auth = request.headers.get("Authorization", "")
+    token = auth[7:] if auth.startswith("Bearer ") else ""
+    try:
+        payload = jwt.decode(token, os.environ["JWT_SECRET"], algorithms=[JWT_ALGORITHM])
+        if payload.get("type") != "admin":
+            raise ValueError("bad type")
+    except Exception:
+        raise HTTPException(status_code=401, detail="Não autorizado.")
 
 
 @api_router.get("/")
@@ -89,6 +147,101 @@ async def lookup_orders(phone: str = Query(...)):
         raise HTTPException(status_code=400, detail="Telefone inválido.")
     orders = await db.orders.find({"phone": digits}, {"_id": 0}).to_list(100)
     return {"orders": orders}
+
+
+@api_router.get("/pix")
+async def pix_code(amount: float = Query(..., gt=0), txid: str = Query("RIFA")):
+    txid = re.sub(r"[^A-Za-z0-9]", "", txid)[:20] or "RIFA"
+    payload = (
+        _emv("00", "01")
+        + _emv("26", _emv("00", "br.gov.bcb.pix") + _emv("01", PIX_CNPJ))
+        + _emv("52", "0000")
+        + _emv("53", "986")
+        + _emv("54", f"{amount:.2f}")
+        + _emv("58", "BR")
+        + _emv("59", "MQ ASSISTENCIA")
+        + _emv("60", "BRASIL")
+        + _emv("62", _emv("05", txid))
+        + "6304"
+    )
+    payload += _crc16(payload)
+    img = qrcode.make(payload)
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    qr_base64 = "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+    return {"payload": payload, "qr_base64": qr_base64, "amount": round(amount, 2)}
+
+
+@api_router.post("/admin/login")
+async def admin_login(input: AdminLogin):
+    if input.password != os.environ.get("ADMIN_PASSWORD"):
+        raise HTTPException(status_code=401, detail="Senha incorreta.")
+    return {"token": create_admin_token()}
+
+
+@api_router.get("/admin/stats")
+async def admin_stats(request: Request):
+    require_admin(request)
+    orders = await db.orders.find({}, {"_id": 0}).to_list(10000)
+    paid = [o for o in orders if o.get("status") == "pago"]
+    pending = [o for o in orders if o.get("status") != "pago"]
+    sold = sum(len(o.get("numbers", [])) for o in orders)
+    return {
+        "total_numbers": TOTAL_NUMBERS,
+        "sold": sold,
+        "available": TOTAL_NUMBERS - sold,
+        "paid_orders": len(paid),
+        "pending_orders": len(pending),
+        "paid_revenue": round(sum(o["total"] for o in paid), 2),
+        "pending_revenue": round(sum(o["total"] for o in pending), 2),
+    }
+
+
+@api_router.get("/admin/orders")
+async def admin_orders(request: Request):
+    require_admin(request)
+    orders = await db.orders.find({}, {"_id": 0}).sort("created_at", -1).to_list(10000)
+    return {"orders": orders}
+
+
+@api_router.post("/admin/orders/{order_id}/paid")
+async def admin_mark_paid(order_id: str, request: Request):
+    require_admin(request)
+    res = await db.orders.update_one({"id": order_id}, {"$set": {"status": "pago"}})
+    if res.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Pedido não encontrado.")
+    return {"ok": True}
+
+
+@api_router.delete("/admin/orders/{order_id}")
+async def admin_delete_order(order_id: str, request: Request):
+    require_admin(request)
+    res = await db.orders.delete_one({"id": order_id})
+    if res.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Pedido não encontrado.")
+    return {"ok": True}
+
+
+@api_router.get("/admin/winners")
+async def admin_get_winners(request: Request):
+    require_admin(request)
+    config = await db.raffle_config.find_one({"key": "main"}, {"_id": 0})
+    winners = (config or {}).get("winners") or [None, None, None, None]
+    return {"prizes": PRIZES, "winners": winners}
+
+
+@api_router.put("/admin/winners")
+async def admin_set_winners(input: WinnersUpdate, request: Request):
+    require_admin(request)
+    nums = [n for n in input.winners if n is not None]
+    if any(n < 1 or n > TOTAL_NUMBERS for n in nums):
+        raise HTTPException(status_code=400, detail="Números devem estar entre 1 e 500.")
+    if len(set(nums)) != len(nums):
+        raise HTTPException(status_code=400, detail="Os números ganhadores devem ser diferentes entre si.")
+    await db.raffle_config.update_one(
+        {"key": "main"}, {"$set": {"winners": input.winners}}, upsert=True
+    )
+    return {"ok": True, "winners": input.winners}
 
 
 app.include_router(api_router)

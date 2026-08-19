@@ -1,4 +1,4 @@
-import { Zap, Instagram, MessageCircle, ShieldCheck } from "lucide-react";
+import { Instagram, MessageCircle, ShieldCheck } from "lucide-react";
 import { ADDRESS, INSTAGRAM_URL, WHATSAPP_URL } from "../data/site";
 
 export const Footer = () => (
@@ -6,10 +6,8 @@ export const Footer = () => (
     <div className="mx-auto max-w-7xl px-4 py-16 md:px-8">
       <div className="grid gap-10 md:grid-cols-3">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-volt text-night">
-              <Zap className="h-5 w-5" strokeWidth={2.5} />
-            </span>
+          <div className="flex items-center gap-3">
+            <img src="/images/mq-logo.png" alt="MQ Assistência" className="h-10 w-auto" />
             <span className="font-display text-xl font-black tracking-tight text-white">
               MQ<span className="text-volt">RIFA</span>
             </span>

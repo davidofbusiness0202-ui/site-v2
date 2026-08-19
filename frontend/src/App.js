@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Lenis from "lenis";
 import axios from "axios";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster, toast } from "sonner";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
@@ -13,10 +14,11 @@ import { Lookup } from "./components/Lookup";
 import { LocationSection } from "./components/LocationSection";
 import { SocialButtons } from "./components/SocialButtons";
 import { Footer } from "./components/Footer";
+import AdminPage from "./pages/AdminPage";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
-function App() {
+function Home() {
   const [raffle, setRaffle] = useState(null);
   const [selected, setSelected] = useState([]);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
@@ -85,7 +87,6 @@ function App() {
   return (
     <div className="min-h-screen bg-night text-white antialiased">
       <div className="grain-overlay" />
-      <Toaster theme="dark" position="top-center" richColors />
       <Navbar />
       <main>
         <Hero deadline={raffle?.deadline} />
@@ -118,6 +119,18 @@ function App() {
         onConflict={handleConflict}
       />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Toaster theme="dark" position="top-center" richColors />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/admin" element={<AdminPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

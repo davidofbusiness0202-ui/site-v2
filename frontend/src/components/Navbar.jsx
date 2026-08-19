@@ -1,4 +1,5 @@
-import { Zap } from "lucide-react";
+import { User } from "lucide-react";
+import { Link } from "react-router-dom";
 import { scrollToId } from "../utils/scroll";
 
 const LINKS = [
@@ -14,11 +15,13 @@ export const Navbar = () => (
       <button
         data-testid="nav-logo"
         onClick={() => window.__lenis?.scrollTo(0)}
-        className="flex items-center gap-2 group"
+        className="flex items-center gap-3 group"
       >
-        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-volt text-night transition-transform duration-300 group-hover:rotate-12">
-          <Zap className="h-5 w-5" strokeWidth={2.5} />
-        </span>
+        <img
+          src="/images/mq-logo.png"
+          alt="MQ Assistência"
+          className="h-10 w-auto transition-transform duration-300 group-hover:scale-105"
+        />
         <span className="font-display text-xl font-black tracking-tight text-white">
           MQ<span className="text-volt">RIFA</span>
         </span>
@@ -37,13 +40,23 @@ export const Navbar = () => (
         ))}
       </nav>
 
-      <button
-        data-testid="nav-cta-participar"
-        onClick={() => scrollToId("#numeros")}
-        className="rounded-full bg-volt px-5 py-2 text-xs font-bold uppercase tracking-[0.15em] text-night transition-all duration-300 hover:bg-volt-dim hover:shadow-[0_0_20px_rgba(255,212,0,0.4)]"
-      >
-        Participar
-      </button>
+      <div className="flex items-center gap-3">
+        <Link
+          data-testid="nav-admin-btn"
+          to="/admin"
+          aria-label="Área do administrador"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-zinc-400 transition-colors duration-300 hover:border-volt hover:text-volt"
+        >
+          <User className="h-4 w-4" />
+        </Link>
+        <button
+          data-testid="nav-cta-participar"
+          onClick={() => scrollToId("#numeros")}
+          className="rounded-full bg-volt px-5 py-2 text-xs font-bold uppercase tracking-[0.15em] text-night transition-all duration-300 hover:bg-volt-dim hover:shadow-[0_0_20px_rgba(255,212,0,0.4)]"
+        >
+          Participar
+        </button>
+      </div>
     </div>
   </header>
 );

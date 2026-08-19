@@ -7,9 +7,9 @@ export const Prizes = () => (
   <section id="premios" className="relative mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-36">
     <SectionHeading
       number="01"
-      title="Um ganhador."
-      highlight="Quatro prêmios."
-      subtitle="O kit completo da MQ Assistência pode ser seu por apenas R$ 5,00. Veja tudo o que está em jogo."
+      title="Quatro números."
+      highlight="Quatro ganhadores."
+      subtitle="Serão sorteados 4 números e cada um leva um prêmio premium da MQ Assistência. Por apenas R$ 5,00 por número, você tem 4 chances de ganhar."
     />
 
     <div className="grid grid-cols-1 gap-5 md:grid-cols-12">

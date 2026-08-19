@@ -94,9 +94,9 @@ export const Hero = ({ deadline }) => {
           transition={{ duration: 0.8, delay: 0.7 }}
           className="mt-8 max-w-xl text-base md:text-lg leading-relaxed text-zinc-400"
         >
-          Concorra a um <span className="text-white font-semibold">kit premium completo</span>:
-          Smart Watch X10 Ultra 3, AirPods Pro 3ª geração, Carregador Turbo 120W Samsung e
-          Caixa de Som Bluetooth à prova d'água. Pagamento fácil via Pix.
+          Serão <span className="text-white font-semibold">4 números sorteados</span> e cada
+          número ganha um prêmio: Smart Watch X10 Ultra 3, AirPods Pro 3ª geração, Carregador
+          Turbo 120W Samsung ou Caixa de Som Bluetooth à prova d'água. Pagamento fácil via Pix.
         </motion.p>
 
         <motion.div

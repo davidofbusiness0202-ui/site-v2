@@ -4,7 +4,7 @@ import { Zap } from "lucide-react";
 const ITEMS = [
   "Compra segura",
   "Sorteio garantido",
-  "Kit premium completo",
+  "4 números ganhadores",
   "Apenas R$ 5,00 o número",
   "Pagamento via Pix",
   "Só 500 números",
