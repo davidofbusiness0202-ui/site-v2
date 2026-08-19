@@ -1,0 +1,114 @@
+{
+  "theme_and_concept": {
+    "theme": "dark",
+    "description": "Awwwards-level craft: bold black (#000/#0a0a0a) and vivid yellow (#FFD400-ish) raffle aesthetic. Hybrid landing page and interactive web app. Kinetic hero, masked line-by-line reveal, numbered chapters, slow editorial marquee, spotlight product photography, framer-motion scroll reveals, lenis smooth scroll. High-contrast, premium, luxury tech feel.",
+    "audience": "Brazilian users from Meta Ads. Mobile-first strategy.",
+    "language": "pt-BR"
+  },
+  "typography": {
+    "headings": {
+      "family": "'Cabinet Grotesk', sans-serif",
+      "style": "Expressive, tight letter-spacing (tracking-tight), radical weight contrast.",
+      "sizes": {
+        "h1": "text-4xl sm:text-5xl lg:text-6xl",
+        "h2": "text-2xl sm:text-3xl lg:text-4xl",
+        "h3": "text-xl sm:text-2xl"
+      }
+    },
+    "body": {
+      "family": "'Inter', sans-serif",
+      "style": "Clean, highly readable, loose line-height (leading-relaxed)."
+    },
+    "labels": {
+      "style": "Uppercase, tiny, wide spacing (tracking-[0.2em])"
+    }
+  },
+  "colors": {
+    "background": {
+      "primary": "#0a0a0a",
+      "secondary": "#141414"
+    },
+    "foreground": {
+      "primary": "#ffffff",
+      "secondary": "#a1a1aa"
+    },
+    "accent": {
+      "primary": "#FFD400",
+      "hover": "#E6BE00"
+    },
+    "border": "#27272a",
+    "status": {
+      "available": "#27272a",
+      "selected": "#FFD400",
+      "reserved": "#ef4444"
+    }
+  },
+  "visual_enhancers": {
+    "textures": "Subtle grain texture overlay to kill digital flatness.",
+    "borders": "Use 1px subtle inner strokes (border-white/10).",
+    "surfaces": "Glassmorphism for floating headers/menus (backdrop-blur-xl, bg-black/60, border-white/10). No pure transparent backgrounds for overlays.",
+    "shadows": "Ambient yellow glow (drop-shadow-[0_0_15px_rgba(255,212,0,0.3)]) for selected elements/CTAs."
+  },
+  "grids_and_layouts": {
+    "spacing": "Generous spacing philosophy. p-6, p-8, p-12. Deeply asymmetrical grids for marketing sections.",
+    "raffle_grid": "Dense grid for 500 numbers (grid-cols-5 to grid-cols-10 depending on breakpoint). Tight gap (gap-2), fully utilized pixels. Custom square aspect ratio.",
+    "product_showcase": "Bento grid or asymmetrical showcase with clipped frames and spotlight gradients on products."
+  },
+  "motion_and_interactions": {
+    "scroll": "Smooth scrolling mandatory using @studio-freight/lenis (or similar smooth scroll).",
+    "hero": "Kinetic text, masked line-by-line reveal using framer-motion.",
+    "marquee": "Slow editorial marquee for trust signals or features (react-fast-marquee).",
+    "micro_interactions": "Hover lifts (-translate-y-1), active states, focus rings. Staggered entrance animations for raffle numbers (batch rendering to maintain performance)."
+  },
+  "accessibility": {
+    "contrast": "Ensure yellow text/buttons have dark text inside them for APCA contrast compliance.",
+    "focus": "Clear focus rings (ring-2 ring-accent ring-offset-2 ring-offset-background).",
+    "reduced_motion": "Respect prefers-reduced-motion media query.",
+    "testing": "All interactive elements MUST include a `data-testid` attribute (e.g., `data-testid=\"buy-numbers-btn\"`, `data-testid=\"number-selector-45\"`)."
+  },
+  "media_and_images": {
+    "image_treatment": "Black background with yellow/gold shine. Spotlight effect.",
+    "urls": {
+      "smart_watch": "https://images.pexels.com/photos/1334602/pexels-photo-1334602.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "airpods": "https://images.unsplash.com/photo-1611049970751-5d6acecdf29c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2ODh8MHwxfHNlYXJjaHwyfHxhaXJwb2RzJTIwcHJvJTIwZGFyayUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzg3MTY5MDc0fDA&ixlib=rb-4.1.0&q=85",
+      "charger": "https://images.pexels.com/photos/19983034/pexels-photo-19983034.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "speaker": "https://images.pexels.com/photos/18542240/pexels-photo-18542240.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+    }
+  },
+  "components_and_features": {
+    "hero": "Contains 30-day countdown timer, kinetic title, primary CTA.",
+    "marquee": "Endless running text 'COMPRA SEGURA • SORTEIO GARANTIDO • ENTREGA PARA TODO BRASIL'.",
+    "product_vitrine": "Grid showcasing the 4 prizes with provided images.",
+    "raffle_selector": "Interactive grid of 500 numbers. States: Free (dark grey), Selected (yellow), Reserved (red/dimmed). Multi-selection support.",
+    "checkout_bar": "Sticky bottom bar appearing when numbers are selected, showing total R$ and 'Finalizar no WhatsApp' button.",
+    "number_lookup": "Input field for phone number to check purchased numbers.",
+    "location": "Section with Google Maps iframe for 'rua joão borges da matt q9 lt 14 MQ Assistencia'.",
+    "social_buttons": "Fixed or prominently displayed WhatsApp and Instagram icons without raw text URLs.",
+    "progress_bar": "Visual indicator of numbers sold vs total (500)."
+  },
+  "instructions_to_main_agent": [
+    "You are building a high-end, dark-mode, mobile-first web app with a Brazilian 'rifa' context.",
+    "Use framer-motion for animations: masked line reveals in the hero and scroll-triggered element fade-ins.",
+    "Install and use `lucide-react` for icons.",
+    "Install and use `react-fast-marquee` for the text marquee.",
+    "Implement smooth scrolling using `lenis` or apply smooth behavior globally.",
+    "Never apply `transition: all` globally. Apply specific transitions to interactive elements.",
+    "Ensure all components are strictly in standard React/Tailwind. Create components in `/app/frontend/src/components/ui/` or use Shadcn if applicable.",
+    "Ensure standard testing attributes `data-testid` are on all buttons and interactive elements.",
+    "Avoid making generic centered layouts. Use asymmetrical blocks for the marketing portions of the page.",
+    "Customize Shadcn components heavily to match the black/yellow premium theme. E.g. inputs should be dark with yellow focus rings."
+  ],
+  "universal_guidelines_for_main_agent": [
+    "You tend to converge toward generic, 'on distribution' outputs. Make creative, distinctive frontends that surprise and delight.",
+    "Don't make generic centered layouts, simplistic gradients, and uniform styling.",
+    "Create depth through layered design elements with z-index hierarchy.",
+    "Use glass-morphism effects with backdrop filters (12-24px blur) for sticky navs.",
+    "You MUST NOT apply universal transition (e.g., `transition: all`). Always add transitions for specific properties.",
+    "You MUST NOT center align the app container, i.e., do not add `.App { text-align: center; }` in the css file.",
+    "Always use modern button styles like pill-shaped, or sharp buttons with interaction animations & color relevant to the app style.",
+    "NEVER use AI assistant Emoji characters like 🤖🧠💭💡🔮🎯 for icons.",
+    "Every interaction needs micro-animations - hover states, transitions, parallax effects, and entrance animations.",
+    "Use 2-3x more spacing than feels comfortable.",
+    "Use `sonner` for toasts."
+  ]
+}

@@ -1,0 +1,54 @@
+const ASSET_BASE =
+  "https://customer-assets-0z36b82j.emergentagent.net/job_01d04336-51fc-44f4-8d95-75d19fc65b26/artifacts";
+
+export const WHATSAPP_URL = "https://wa.me/message/Y75R6GYC573RK1";
+export const INSTAGRAM_URL = "https://www.instagram.com/mqcell06/";
+
+export const ADDRESS = "Rua João Borges da Matt, Q9 Lt 14 — MQ Assistência";
+export const MAPS_EMBED =
+  "https://www.google.com/maps?q=Rua%20Jo%C3%A3o%20Borges%20da%20Matt%20Q9%20Lt%2014%20MQ%20Assistencia&output=embed";
+export const MAPS_LINK =
+  "https://www.google.com/maps/search/?api=1&query=Rua%20Jo%C3%A3o%20Borges%20da%20Matt%20Q9%20Lt%2014%20MQ%20Assistencia";
+
+export const IMAGES = {
+  charger: `${ASSET_BASE}/l39ejkwz_ChatGPT%20Image%2019%20de%20ago.%20de%202026%2C%2016_40_33.png`,
+  watch: `${ASSET_BASE}/5rfthvqu_ChatGPT%20Image%2019%20de%20ago.%20de%202026%2C%2016_38_56.png`,
+  airpods: `${ASSET_BASE}/fiq3d9l4_ChatGPT%20Image%204%20de%20ago.%20de%202026%2C%2016_44_03.png`,
+  speaker: `${ASSET_BASE}/4ji10q6l_ChatGPT%20Image%2019%20de%20ago.%20de%202026%2C%2016_43_05.png`,
+};
+
+export const PRIZES = [
+  {
+    tag: "01",
+    name: "Smart Watch X10 Ultra 3",
+    detail: "47mm • acompanha 2 pulseiras",
+    image: IMAGES.watch,
+    span: "md:col-span-7",
+  },
+  {
+    tag: "02",
+    name: "Apple AirPods Pro 3ª Geração",
+    detail: "Linha Premium",
+    image: IMAGES.airpods,
+    span: "md:col-span-5",
+  },
+  {
+    tag: "03",
+    name: "Carregador Turbo 120W Samsung",
+    detail: "Tipo C • Linha Premium",
+    image: IMAGES.charger,
+    span: "md:col-span-5",
+  },
+  {
+    tag: "04",
+    name: "Caixa de Som Bluetooth",
+    detail: "À prova d'água",
+    image: IMAGES.speaker,
+    span: "md:col-span-7",
+  },
+];
+
+export const pad = (n) => String(n).padStart(3, "0");
+
+export const brl = (v) =>
+  v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
