@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Dices, Trophy, ArrowLeft, AlertTriangle, UserCheck, UserX, MessageCircle } from "lucide-react";
+import { Dices, Trophy, ArrowLeft, AlertTriangle, UserCheck, UserX, MessageCircle, Eye, EyeOff } from "lucide-react";
 import { pad, buildWhatsAppPhoneUrl, buildWinnerMessage } from "../../data/site";
 
 const PrizeDraw = ({ index, prize, winner, holder }) => {
   const [display, setDisplay] = useState(null);
   const [phase, setPhase] = useState("idle");
+  const [hidden, setHidden] = useState(true);
 
   const spin = () => {
     if (phase === "spinning" || winner == null) return;
+    setHidden(true);
     setPhase("spinning");
     let ticks = 0;
     const total = 60;
@@ -25,6 +27,8 @@ const PrizeDraw = ({ index, prize, winner, holder }) => {
     setTimeout(tick, 45);
   };
 
+  const masked = phase === "done" && hidden;
+
   return (
     <div
       data-testid={`draw-prize-${index}`}
@@ -38,13 +42,33 @@ const PrizeDraw = ({ index, prize, winner, holder }) => {
         {phase === "done" && <Trophy className="h-5 w-5 text-volt" />}
       </div>
 
-      <div className="mt-5 flex h-36 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-black/60">
+      <div className="relative mt-5 flex h-36 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-black/60">
+        {winner != null && (
+          <button
+            data-testid={`toggle-reveal-${index}`}
+            onClick={() => setHidden((h) => !h)}
+            aria-label={hidden ? "Revelar número" : "Ocultar número"}
+            className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-black/60 text-zinc-400 backdrop-blur-md transition-colors duration-300 hover:border-volt hover:text-volt"
+          >
+            {hidden ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+          </button>
+        )}
         {winner == null ? (
           <p className="px-4 text-center text-xs text-zinc-600">
             Defina o número ganhador no painel para liberar o sorteio
           </p>
         ) : display == null ? (
           <p className="font-mono text-sm tracking-[0.3em] text-zinc-600">? ? ?</p>
+        ) : masked ? (
+          <motion.span
+            key="masked"
+            initial={{ scale: 0.4, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 14 }}
+            className="font-mono text-6xl font-black tracking-[0.2em] text-zinc-700 md:text-7xl"
+          >
+            •••
+          </motion.span>
         ) : (
           <motion.span
             key={`${phase}-${display}`}

@@ -23,6 +23,9 @@ Site de rifa online para divulgação via Meta Ads. Tema preto e amarelo, estilo
 - Mapa do Google com a loja física
 - Botões Instagram (instagram.com/mqcell06) e WhatsApp (wa.me/message/Y75R6GYC573RK1) sem exibir URLs
 
+## Implementado (20/08/2026 — fase 5)
+- Olho de ocultar/revelar na roleta do Sorteio: após girar, o NÚMERO sorteado fica mascarado (•••) até clicar no olho; o nome do ganhador e o botão Avisar ficam sempre visíveis (para a live não vazar o número antes da hora)
+
 ## Implementado (20/08/2026 — fase 4)
 - Botão "Avisar" no resultado da roleta: abre o WhatsApp do ganhador com mensagem automática de parabéns (prêmio + número)
 - Resultado público: botão "Publicar resultado no site" no painel (exige os 4 ganhadores definidos); seção "Resultado oficial" aparece na home com os 4 números e ganhadores; seções renumeradas (consulta 04, loja 05)
