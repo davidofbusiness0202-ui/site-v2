@@ -54,7 +54,7 @@ export const pad = (n) => String(n).padStart(3, "0");
 export const brl = (v) =>
   v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
-export const PIX_KEY = "65.836.767/0001-09";
+export const PIX_KEY = "mqassistencia@jim.com";
 
 // Número do WhatsApp da loja (DDI + DDD + número, só dígitos) — ativa a mensagem automática.
 export const WHATSAPP_NUMBER = "556295389068";
@@ -63,7 +63,7 @@ export const buildWhatsAppUrl = (text) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 
 export const buildOrderText = (order) =>
-  `Olá! Acabei de reservar meus números na Rifa MQ Assistência.\nNome: ${order.name}\nNúmeros: ${order.numbers.map(pad).join(", ")}\nTotal: ${brl(order.total)}\nPix (CNPJ): ${PIX_KEY}\nSegue meu comprovante para confirmar.`;
+  `Olá! Acabei de reservar meus números na Rifa MQ Assistência.\nNome: ${order.name}\nNúmeros: ${order.numbers.map(pad).join(", ")}\nTotal: ${brl(order.total)}\nPix (e-mail): ${PIX_KEY}\nSegue meu comprovante para confirmar.`;
 
 export const buildWhatsAppPhoneUrl = (phone, text) => {
   const digits = String(phone).replace(/\D/g, "");

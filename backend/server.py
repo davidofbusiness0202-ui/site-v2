@@ -29,7 +29,7 @@ TOTAL_NUMBERS = 500
 PRICE_PER_NUMBER = 5.0
 JWT_ALGORITHM = "HS256"
 
-PIX_CNPJ = "65836767000109"
+PIX_KEY = "mqassistencia@jim.com"
 
 PRIZES = [
     "Smart Watch X10 Ultra 3",
@@ -169,7 +169,7 @@ async def pix_code(amount: float = Query(..., gt=0), txid: str = Query("RIFA")):
     txid = re.sub(r"[^A-Za-z0-9]", "", txid)[:20] or "RIFA"
     payload = (
         _emv("00", "01")
-        + _emv("26", _emv("00", "br.gov.bcb.pix") + _emv("01", PIX_CNPJ))
+        + _emv("26", _emv("00", "br.gov.bcb.pix") + _emv("01", PIX_KEY))
         + _emv("52", "0000")
         + _emv("53", "986")
         + _emv("54", f"{amount:.2f}")

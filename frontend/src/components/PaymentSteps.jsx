@@ -85,7 +85,7 @@ export const PaymentSteps = ({ order }) => {
           <Copy className="h-4 w-4" /> Pix copia e cola ({brl(order.total)})
         </button>
         <p className="mt-2 text-center text-[11px] text-zinc-600">
-          Chave CNPJ: {PIX_KEY} — MQ Assistência
+          Chave Pix (e-mail): {PIX_KEY} — MQ Assistência
         </p>
       </div>
 
