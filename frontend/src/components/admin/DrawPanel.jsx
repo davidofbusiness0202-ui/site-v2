@@ -131,10 +131,6 @@ export const DrawPanel = ({ prizes, winners, orders, onBack }) => {
           <h2 className="font-display text-2xl font-extrabold tracking-tight md:text-3xl">
             Sorteio <span className="text-volt">ao vivo</span>
           </h2>
-          <p className="mt-1 text-sm text-zinc-500">
-            A roleta gira entre os 500 números e para exatamente nos ganhadores que você definiu.
-            Visível apenas aqui no painel.
-          </p>
         </div>
       </div>
 
