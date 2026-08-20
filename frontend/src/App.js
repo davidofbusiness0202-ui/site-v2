@@ -11,6 +11,7 @@ import { NumberGrid } from "./components/NumberGrid";
 import { CheckoutBar } from "./components/CheckoutBar";
 import { CheckoutModal } from "./components/CheckoutModal";
 import { Lookup } from "./components/Lookup";
+import { ResultsSection } from "./components/ResultsSection";
 import { LocationSection } from "./components/LocationSection";
 import { SocialButtons } from "./components/SocialButtons";
 import { Footer } from "./components/Footer";
@@ -99,6 +100,7 @@ function Home() {
           onSurprise={surprise}
           onClear={() => setSelected([])}
         />
+        {raffle?.results && <ResultsSection results={raffle.results} />}
         <Lookup />
         <TrustMarquee />
         <LocationSection />

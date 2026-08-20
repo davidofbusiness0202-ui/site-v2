@@ -34,7 +34,7 @@ export const Lookup = () => {
   return (
     <section id="consulta" className="mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-36">
       <SectionHeading
-        number="03"
+        number="04"
         title="Consulte seus"
         highlight="números"
         subtitle="Já comprou? Digite o telefone usado na reserva e veja todos os seus números."

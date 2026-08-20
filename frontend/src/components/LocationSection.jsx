@@ -6,7 +6,7 @@ import { Reveal } from "./Reveal";
 export const LocationSection = () => (
   <section id="localizacao" className="mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-36">
     <SectionHeading
-      number="04"
+      number="05"
       title="Loja física"
       highlight="de verdade"
       subtitle="A rifa é da MQ Assistência, uma loja real que você pode visitar. Transparência total: passe lá, conheça os prêmios e compre seu número pessoalmente."

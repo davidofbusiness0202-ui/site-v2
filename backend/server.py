@@ -103,6 +103,20 @@ async def get_raffle():
         await db.raffle_config.insert_one(config)
     orders = await db.orders.find({}, {"_id": 0, "numbers": 1}).to_list(10000)
     taken = sorted({n for o in orders for n in o.get("numbers", [])})
+    results = None
+    winners_cfg = config.get("winners")
+    if config.get("results_published") and winners_cfg:
+        full_orders = await db.orders.find({}, {"_id": 0, "numbers": 1, "name": 1}).to_list(10000)
+        results = []
+        for i, w in enumerate(winners_cfg):
+            holder = next(
+                (o for o in full_orders if w is not None and w in o.get("numbers", [])), None
+            )
+            results.append({
+                "prize": PRIZES[i] if i < len(PRIZES) else f"Prêmio {i + 1}",
+                "number": w,
+                "winner_name": holder["name"] if holder else None,
+            })
     return {
         "total_numbers": TOTAL_NUMBERS,
         "price_per_number": PRICE_PER_NUMBER,
@@ -110,6 +124,7 @@ async def get_raffle():
         "taken_numbers": taken,
         "sold_count": len(taken),
         "available_count": TOTAL_NUMBERS - len(taken),
+        "results": results,
     }
 
 
@@ -227,7 +242,32 @@ async def admin_get_winners(request: Request):
     require_admin(request)
     config = await db.raffle_config.find_one({"key": "main"}, {"_id": 0})
     winners = (config or {}).get("winners") or [None, None, None, None]
-    return {"prizes": PRIZES, "winners": winners}
+    return {
+        "prizes": PRIZES,
+        "winners": winners,
+        "published": bool((config or {}).get("results_published")),
+    }
+
+
+class PublishUpdate(BaseModel):
+    published: bool
+
+
+@api_router.put("/admin/results")
+async def admin_publish_results(input: PublishUpdate, request: Request):
+    require_admin(request)
+    if input.published:
+        config = await db.raffle_config.find_one({"key": "main"})
+        winners = (config or {}).get("winners") or []
+        if len([w for w in winners if w is not None]) < 4:
+            raise HTTPException(
+                status_code=400,
+                detail="Defina os 4 números ganhadores antes de publicar o resultado.",
+            )
+    await db.raffle_config.update_one(
+        {"key": "main"}, {"$set": {"results_published": input.published}}, upsert=True
+    )
+    return {"ok": True, "published": input.published}
 
 
 @api_router.put("/admin/winners")

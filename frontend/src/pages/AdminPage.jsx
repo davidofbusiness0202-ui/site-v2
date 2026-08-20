@@ -14,6 +14,8 @@ import {
   Trophy,
   ArrowLeft,
   Dices,
+  Globe,
+  EyeOff,
 } from "lucide-react";
 import { pad, brl } from "../data/site";
 import { DrawPanel } from "../components/admin/DrawPanel";
@@ -29,6 +31,7 @@ export default function AdminPage() {
   const [prizes, setPrizes] = useState([]);
   const [winners, setWinners] = useState(["", "", "", ""]);
   const [view, setView] = useState("dash");
+  const [published, setPublished] = useState(false);
 
   const client = useCallback(
     () => axios.create({ headers: { Authorization: `Bearer ${token}` } }),
@@ -48,6 +51,7 @@ export default function AdminPage() {
       setOrders(o.data.orders);
       setPrizes(w.data.prizes);
       setWinners(w.data.winners.map((n) => (n ? String(n) : "")));
+      setPublished(!!w.data.published);
     } catch (e) {
       if (e.response?.status === 401) {
         localStorage.removeItem("mq_admin_token");
@@ -285,13 +289,46 @@ export default function AdminPage() {
               );
             })}
           </div>
-          <button
-            data-testid="save-winners-btn"
-            onClick={saveWinners}
-            className="mt-6 rounded-full bg-volt px-8 py-3 text-xs font-bold uppercase tracking-[0.15em] text-night transition-all duration-300 hover:bg-volt-dim active:scale-95"
-          >
-            Salvar ganhadores
-          </button>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <button
+              data-testid="save-winners-btn"
+              onClick={saveWinners}
+              className="rounded-full bg-volt px-8 py-3 text-xs font-bold uppercase tracking-[0.15em] text-night transition-all duration-300 hover:bg-volt-dim active:scale-95"
+            >
+              Salvar ganhadores
+            </button>
+            <button
+              data-testid="toggle-publish-btn"
+              onClick={async () => {
+                try {
+                  const res = await client().put(`${API}/admin/results`, { published: !published });
+                  setPublished(res.data.published);
+                  toast.success(
+                    res.data.published
+                      ? "Resultado publicado no site!"
+                      : "Resultado ocultado do site."
+                  );
+                } catch (e) {
+                  toast.error(e.response?.data?.detail || "Erro ao atualizar o resultado.");
+                }
+              }}
+              className={`flex items-center gap-2 rounded-full px-8 py-3 text-xs font-bold uppercase tracking-[0.15em] transition-all duration-300 active:scale-95 ${
+                published
+                  ? "border border-emerald-400/50 text-emerald-400 hover:bg-emerald-400 hover:text-night"
+                  : "border border-white/20 text-zinc-300 hover:border-volt hover:text-volt"
+              }`}
+            >
+              {published ? (
+                <>
+                  <EyeOff className="h-4 w-4" /> Resultado no ar — ocultar
+                </>
+              ) : (
+                <>
+                  <Globe className="h-4 w-4" /> Publicar resultado no site
+                </>
+              )}
+            </button>
+          </div>
         </section>
 
         <section className="mt-10">

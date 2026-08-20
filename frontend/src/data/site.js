@@ -64,3 +64,12 @@ export const buildWhatsAppUrl = (text) =>
 
 export const buildOrderText = (order) =>
   `Olá! Acabei de reservar meus números na Rifa MQ Assistência.\nNome: ${order.name}\nNúmeros: ${order.numbers.map(pad).join(", ")}\nTotal: ${brl(order.total)}\nPix (CNPJ): ${PIX_KEY}\nSegue meu comprovante para confirmar.`;
+
+export const buildWhatsAppPhoneUrl = (phone, text) => {
+  const digits = String(phone).replace(/\D/g, "");
+  const full = digits.startsWith("55") ? digits : `55${digits}`;
+  return `https://wa.me/${full}?text=${encodeURIComponent(text)}`;
+};
+
+export const buildWinnerMessage = (name, prize, number) =>
+  `Parabéns, ${name}! Aqui é da MQ Assistência. Seu número ${pad(number)} foi sorteado na nossa rifa e você ganhou: ${prize}! Vamos combinar a entrega do seu prêmio.`;

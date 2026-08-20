@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Dices, Trophy, ArrowLeft, AlertTriangle, UserCheck, UserX } from "lucide-react";
-import { pad } from "../../data/site";
+import { Dices, Trophy, ArrowLeft, AlertTriangle, UserCheck, UserX, MessageCircle } from "lucide-react";
+import { pad, buildWhatsAppPhoneUrl, buildWinnerMessage } from "../../data/site";
 
 const PrizeDraw = ({ index, prize, winner, holder }) => {
   const [display, setDisplay] = useState(null);
@@ -79,13 +79,22 @@ const PrizeDraw = ({ index, prize, winner, holder }) => {
           {holder ? (
             <>
               <UserCheck className="h-4 w-4 shrink-0 text-volt" />
-              <p className="text-xs text-zinc-300">
+              <p className="flex-1 text-xs text-zinc-300">
                 Ganhador: <span className="font-bold text-white">{holder.name}</span> •{" "}
                 {holder.phone} •{" "}
                 <span className={holder.status === "pago" ? "text-emerald-400" : "text-volt"}>
                   {holder.status === "pago" ? "pago" : "aguardando pagamento"}
                 </span>
               </p>
+              <a
+                data-testid={`notify-winner-${index}`}
+                href={buildWhatsAppPhoneUrl(holder.phone, buildWinnerMessage(holder.name, prize, winner))}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex shrink-0 items-center gap-1.5 rounded-full bg-volt px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-night transition-colors hover:bg-volt-dim"
+              >
+                <MessageCircle className="h-3.5 w-3.5" /> Avisar
+              </a>
             </>
           ) : (
             <>
