@@ -23,6 +23,11 @@ Site de rifa online para divulgação via Meta Ads. Tema preto e amarelo, estilo
 - Mapa do Google com a loja física
 - Botões Instagram (instagram.com/mqcell06) e WhatsApp (wa.me/message/Y75R6GYC573RK1) sem exibir URLs
 
+## Implementado (20/08/2026 — fase 3)
+- Endereço completo: Rua João Borges da Matt, Q9 Lt 14, Res. Vale do Araguaia, Goiânia - GO, 74735-520. Mapa fixado por coordenadas (-16.6758681, -49.2047908) pois o nome da rua não existe na base do Google
+- Área "Sorteio" no painel admin (botão Sorteio ao lado de Ver site): roleta com 500 números por prêmio, gera suspense e para exatamente no número ganhador definido; mostra quem comprou o número (nome, telefone, status) ou "número não vendido"
+- Números ganhadores definidos pelo agente (a pedido do usuário): 042 (Smart Watch), 188 (AirPods), 377 (Carregador), 499 (Caixa de Som) — alteráveis no painel
+
 ## Implementado (19/08/2026 — fase 2)
 - Painel Admin em /admin com senha (JWT 24h): estatísticas (vendidos, pendentes, pagos, arrecadado), lista de pedidos com "Marcar pago" e "Liberar reserva", definição dos 4 números ganhadores (1 por prêmio, só visível no admin, mostra quem comprou o número)
 - Ícone de pessoa ao lado do botão Participar leva ao login do admin

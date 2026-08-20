@@ -13,8 +13,10 @@ import {
   Trash2,
   Trophy,
   ArrowLeft,
+  Dices,
 } from "lucide-react";
 import { pad, brl } from "../data/site";
+import { DrawPanel } from "../components/admin/DrawPanel";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -26,6 +28,7 @@ export default function AdminPage() {
   const [orders, setOrders] = useState([]);
   const [prizes, setPrizes] = useState([]);
   const [winners, setWinners] = useState(["", "", "", ""]);
+  const [view, setView] = useState("dash");
 
   const client = useCallback(
     () => axios.create({ headers: { Authorization: `Bearer ${token}` } }),
@@ -177,6 +180,17 @@ export default function AdminPage() {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              data-testid="admin-draw-btn"
+              onClick={() => setView(view === "draw" ? "dash" : "draw")}
+              className={`flex items-center gap-2 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                view === "draw"
+                  ? "bg-volt text-night shadow-[0_0_20px_rgba(255,212,0,0.4)]"
+                  : "border border-volt/50 text-volt hover:bg-volt hover:text-night"
+              }`}
+            >
+              <Dices className="h-3.5 w-3.5" /> Sorteio
+            </button>
             <Link
               data-testid="admin-view-site"
               to="/"
@@ -195,6 +209,14 @@ export default function AdminPage() {
         </div>
       </header>
 
+      {view === "draw" ? (
+        <DrawPanel
+          prizes={prizes}
+          winners={winners.map((w) => (String(w).trim() === "" ? null : Number(w)))}
+          orders={orders}
+          onBack={() => setView("dash")}
+        />
+      ) : (
       <main data-testid="admin-dashboard" className="mx-auto max-w-6xl px-4 py-10 md:px-8">
         {stats && (
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -336,6 +358,7 @@ export default function AdminPage() {
           )}
         </section>
       </main>
+      )}
     </div>
   );
 }

@@ -4,11 +4,12 @@ const ASSET_BASE =
 export const WHATSAPP_URL = "https://wa.me/message/Y75R6GYC573RK1";
 export const INSTAGRAM_URL = "https://www.instagram.com/mqcell06/";
 
-export const ADDRESS = "Rua João Borges da Matt, Q9 Lt 14 — MQ Assistência";
+export const ADDRESS =
+  "Rua João Borges da Matt, Q9 Lt 14 — Res. Vale do Araguaia, Goiânia - GO, 74735-520";
 export const MAPS_EMBED =
-  "https://www.google.com/maps?q=Rua%20Jo%C3%A3o%20Borges%20da%20Matt%20Q9%20Lt%2014%20MQ%20Assistencia&output=embed";
+  "https://www.google.com/maps?q=-16.6758681,-49.2047908&z=17&output=embed";
 export const MAPS_LINK =
-  "https://www.google.com/maps/search/?api=1&query=Rua%20Jo%C3%A3o%20Borges%20da%20Matt%20Q9%20Lt%2014%20MQ%20Assistencia";
+  "https://www.google.com/maps/search/?api=1&query=Rua%20Jo%C3%A3o%20Borges%20da%20Matt%20Q9%20Lt%2014%20Res%20Vale%20do%20Araguaia%20Goi%C3%A2nia%20GO%2074735-520";
 
 export const IMAGES = {
   charger: `${ASSET_BASE}/l39ejkwz_ChatGPT%20Image%2019%20de%20ago.%20de%202026%2C%2016_40_33.png`,
